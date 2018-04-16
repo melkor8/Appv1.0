@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "58702345243",
+    "firebase_url": "https://parkit-1daae.firebaseio.com",
+    "project_id": "parkit-1daae",
+    "storage_bucket": "parkit-1daae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58702345243:android:bc1e75372e050853",
+        "android_client_info": {
+          "package_name": "com.example.frank47.parkit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "58702345243-2eamcqvlr6dvccimhjnjdr8glq69rr7i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.frank47.parkit",
+            "certificate_hash": "2a0ba650fbadbb61fa53b1c0c4196aa2c1cd82f9"
+          }
+        },
+        {
+          "client_id": "58702345243-04mqh6e3f7sm1grcfc0jldgrkvr4vorg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCif_SE0u0sU8QkTbnHqsEMz77wObkxUk8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "58702345243-04mqh6e3f7sm1grcfc0jldgrkvr4vorg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
