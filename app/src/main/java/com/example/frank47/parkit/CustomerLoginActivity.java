@@ -30,12 +30,12 @@ public class CustomerLoginActivity extends AppCompatActivity {
 
         mAuth=FirebaseAuth.getInstance();
 
-        firebaseAuthListener=new FirebaseAuth.AuthStateListener() {
+        firebaseAuthListener= new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                if(user!=null){
+                if(user!= null){
                     Intent intent= new Intent(CustomerLoginActivity.this, MapActivity.class);
                     startActivity(intent);
                     finish();
@@ -59,7 +59,7 @@ public class CustomerLoginActivity extends AppCompatActivity {
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(CustomerLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
+                        if(!(task.isSuccessful())){
                             Toast.makeText(CustomerLoginActivity.this, "registration error", Toast.LENGTH_SHORT).show();
                         }else{
                             String user_Id= mAuth.getCurrentUser().getUid();
@@ -81,10 +81,8 @@ public class CustomerLoginActivity extends AppCompatActivity {
                 mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(CustomerLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
+                        if(!(task.isSuccessful())){
                             Toast.makeText(CustomerLoginActivity.this, "sign in error", Toast.LENGTH_SHORT).show();
-                        }else{
-
                         }
                     }
                 });

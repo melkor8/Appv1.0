@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ParkIt</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="login">Login</string>
+    <string name="registration">Registration</string>
+    <string name="customer">Customer</string>
+    <string name="parking_space_owner">Parking_space_owner</string>
+    <string name="title_activity_psowner_maps">Map</string>
+    <string name="title_activity_ps_owner_maps">Map</string>
 </resources>

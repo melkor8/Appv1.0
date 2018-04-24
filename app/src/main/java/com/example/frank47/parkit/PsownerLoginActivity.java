@@ -37,7 +37,7 @@ public class PsownerLoginActivity extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                 if(user!=null){
-                    Intent intent= new Intent(PsownerLoginActivity.this, MapActivity.class);
+                    Intent intent= new Intent(PsownerLoginActivity.this, PsownerMapsActivity.class);
                     startActivity(intent);
                     finish();
                     return;
@@ -60,11 +60,11 @@ public class PsownerLoginActivity extends AppCompatActivity {
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(PsownerLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
+                        if(!(task.isSuccessful())){
                             Toast.makeText(PsownerLoginActivity.this, "registration error", Toast.LENGTH_SHORT).show();
                         }else{
                             String user_Id= mAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db= FirebaseDatabase.getInstance().getReference().child("Users").child("Parking Space Owners").child(user_Id);
+                            DatabaseReference current_user_db= FirebaseDatabase.getInstance().getReference().child("Users").child("Parking_space_owner").child(user_Id);
                             current_user_db.setValue(true);
 
                         }
@@ -82,10 +82,8 @@ public class PsownerLoginActivity extends AppCompatActivity {
                 mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(PsownerLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()){
+                        if(!(task.isSuccessful())){
                             Toast.makeText(PsownerLoginActivity.this, "sign in error", Toast.LENGTH_SHORT).show();
-                        }else{
-
                         }
                     }
                 });
@@ -106,4 +104,7 @@ public class PsownerLoginActivity extends AppCompatActivity {
         mAuth.removeAuthStateListener(firebaseAuthListener);
     }
 }
+
+
+
 
