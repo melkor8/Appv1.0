@@ -37,7 +37,7 @@ public class PsownerLoginActivity extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                 if(user!=null){
-                    Intent intent= new Intent(PsownerLoginActivity.this, PsownerMapsActivity.class);
+                    final Intent intent= new Intent(PsownerLoginActivity.this, PsownerMapsActivity.class);
                     startActivity(intent);
                     finish();
                     return;
@@ -54,8 +54,8 @@ public class PsownerLoginActivity extends AppCompatActivity {
         mRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String email = mEmail.getText().toString();
-                final String password= mPassword.getText().toString();
+                final String email = mEmail.getText().toString().trim();
+                final String password= mPassword.getText().toString().trim();
 
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(PsownerLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -76,8 +76,8 @@ public class PsownerLoginActivity extends AppCompatActivity {
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String email = mEmail.getText().toString();
-                final String password= mPassword.getText().toString();
+                final String email = mEmail.getText().toString().trim();
+                final String password= mPassword.getText().toString().trim();
 
                 mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(PsownerLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override

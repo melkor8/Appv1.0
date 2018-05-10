@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PsownerMapsActivity" >
+    tools:context=".CustomerMapsActivity" >
 
 
     <fragment
@@ -12,6 +12,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -21,13 +22,21 @@
             android:id="@+id/buttons"
             android:gravity="bottom">
 
+            <Spinner
+                android:id="@+id/duration_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown"
+                android:entries="@array/duration_array"
+                android:prompt="@string/duration_prompt"/>
             <Button
-                android:id="@+id/lease"
+                android:id="@+id/rent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_weight="1"
-                android:text="lease" />
+                android:text="rent" />
 
             <Button
                 android:layout_weight="1"
@@ -36,6 +45,7 @@
                 android:id="@+id/logout"
                 android:text="logout"
                 android:layout_gravity="bottom"/>
+
 
         </LinearLayout>
 

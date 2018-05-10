@@ -8,4 +8,22 @@
     <string name="parking_space_owner">Parking_space_owner</string>
     <string name="title_activity_psowner_maps">Map</string>
     <string name="title_activity_ps_owner_maps">Map</string>
+    <string name="title_activity_customer_maps">Map</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="duration_prompt">Choose required duration</string>
+
+    <string-array name="duration_array">
+        <item>30 mins</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>5 hours</item>
+        <item>10 hours</item>
+        <item>12 hours</item>
+    </string-array>
+    <string name="title_activity_navigation_maps">Map</string>
+    <string name="end_parking">End Parking</string>
+    <string name="you_have_rented_the_parking_space_for">You have rented the parking space for</string>
+    <string name="please_pay_an_amount_of">Please pay an amount of</string>
+
 </resources>

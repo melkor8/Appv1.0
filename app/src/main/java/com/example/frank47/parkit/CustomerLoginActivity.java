@@ -36,7 +36,7 @@ public class CustomerLoginActivity extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                 if(user!= null){
-                    Intent intent= new Intent(CustomerLoginActivity.this, MapActivity.class);
+                    final Intent intent= new Intent(CustomerLoginActivity.this, CustomerMapsActivity.class);
                     startActivity(intent);
                     finish();
                     return;
@@ -53,8 +53,8 @@ public class CustomerLoginActivity extends AppCompatActivity {
         mRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String email = mEmail.getText().toString();
-                final String password= mPassword.getText().toString();
+                final String email = mEmail.getText().toString().trim();
+                final String password= mPassword.getText().toString().trim();
 
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(CustomerLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -75,8 +75,8 @@ public class CustomerLoginActivity extends AppCompatActivity {
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String email = mEmail.getText().toString();
-                final String password= mPassword.getText().toString();
+                final String email = mEmail.getText().toString().trim();
+                final String password= mPassword.getText().toString().trim();
 
                 mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(CustomerLoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override

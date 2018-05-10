@@ -10,12 +10,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoFire.CompletionListener;
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -43,7 +48,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PsownerMapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+
+public class CustomerMapsActivity extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener {
 
     public View mMapView;
     private GoogleMap mMap;
@@ -54,23 +60,40 @@ public class PsownerMapsActivity extends FragmentActivity implements OnMapReadyC
     private LatLng destinationLatLng;
 
     private Button mLogOut;
-    private Button mLease;
+    private Button mRent;
     Marker mMarker;
     private int searchcount=0;
 
+    private int radius=1;
+    private Boolean spacefound=false;
+    private String spaceId;
+    public static String rentId;
+    double rentlatitude, rentlongitude;
+
+    private Spinner mSpinner;
+
+    public static LatLng current_latlng, parking_space_latlng;
+    public static int spinner_selection;
+
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
     public static class location{
-      public String glat,glong;
-      public location(String glat, String glong){
-          this.glat = glat;
-          this.glong = glong;
-      }
+        public String glat,glong;
+        public location(String glat, String glong){
+            this.glat = glat;
+            this.glong = glong;
+        }
 
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_psowner_maps);
+        setContentView(R.layout.activity_customer_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -80,47 +103,44 @@ public class PsownerMapsActivity extends FragmentActivity implements OnMapReadyC
 
 
         mLogOut =(Button) findViewById(R.id.logout);
-        mLease = (Button) findViewById(R.id.lease);
+        mRent = (Button) findViewById(R.id.rent);
 
         mLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(PsownerMapsActivity.this, MainActivity.class);
+                Intent intent = new Intent(CustomerMapsActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
                 return;
             }
         });
 
-        mLease.setOnClickListener(new View.OnClickListener() {
+        mRent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                String userid=user.getUid().toString();
 
-                final FirebaseDatabase database =FirebaseDatabase.getInstance();
-                DatabaseReference mfirebaseDatabase = database.getReference("parkingspaces");
-                GeoFire geoFire = new GeoFire(mfirebaseDatabase);
+                getClosestParkingSpace();
 
-                /*String lat,lng;
-                lat= String.valueOf(mMarker.getPosition().latitude);
-                lng= String.valueOf(mMarker.getPosition().longitude);
-
-                System.out.println(lat + "   " + lng);System.out.println(lat + "   " + lng);
-
-                Map<String,location> mhashmap = new HashMap<>();
-                mfirebaseDatabase.child(userid).setValue(new location(lat,lng));
-                */
-                geoFire.setLocation(userid, new GeoLocation(destinationLatLng.latitude, destinationLatLng.longitude), new GeoFire.CompletionListener() {
-                    @Override
-                    public void onComplete(String key, DatabaseError error) {
-                        Toast.makeText(PsownerMapsActivity.this, "Your location has been saved", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
             }
         });
+
+        mSpinner= findViewById(R.id.duration_spinner);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(CustomerMapsActivity.this, "You have selected to book for "+parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
+
+                spinner_selection=position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -138,21 +158,100 @@ public class PsownerMapsActivity extends FragmentActivity implements OnMapReadyC
                 destination = place.getName().toString();
                 destinationLatLng = place.getLatLng();
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng,15));
-
-
                 mMarker = mMap.addMarker(new MarkerOptions()
-                .position(destinationLatLng)
-                .title("Current Position")
+                        .position(destinationLatLng)
+                        .title("Current Position")
                 .draggable(true));
+
+                 current_latlng=destinationLatLng;
             }
             @Override
             public void onError(Status status) {
                 // TODO: Handle the error.
-                Toast.makeText(PsownerMapsActivity.this, "Not recognized", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CustomerMapsActivity.this, "Not recognized", Toast.LENGTH_SHORT).show();
             }
         });
 
 
+    }
+
+    private void getClosestParkingSpace() {
+        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference().child("parkingspaces");
+        DatabaseReference assignment_ref = FirebaseDatabase.getInstance().getReference().child("assignment");
+
+
+
+        final GeoFire geofire = new GeoFire(dbref);
+        final GeoFire geofirerent = new GeoFire(assignment_ref);
+
+        GeoQuery query = geofire.queryAtLocation(new GeoLocation(mMarker.getPosition().latitude,mMarker.getPosition().longitude),radius);
+        query.removeAllListeners();
+
+        query.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+            public void onKeyEntered(String key, GeoLocation location) {
+                if(!spacefound){
+                    spacefound=true;
+                    spaceId=key;
+                    //Toast.makeText(CustomerMapsActivity.this, ""+spaceId, Toast.LENGTH_LONG).show();
+
+                    System.out.println(spaceId);
+                    rentId=spaceId;
+                    rentlatitude = location.latitude;
+                    rentlongitude= location.longitude;
+
+                    parking_space_latlng=new LatLng(rentlatitude,rentlongitude);
+
+                    geofirerent.setLocation(rentId, location, new GeoFire.CompletionListener() {
+                            @Override
+                        public void onComplete(String key, DatabaseError error) {
+
+                        }
+                    });
+
+
+                    DatabaseReference dbrefremove = FirebaseDatabase.getInstance().getReference().child("parkingspaces");
+                    final GeoFire geofireremove = new GeoFire(dbrefremove);
+                    geofireremove.removeLocation(rentId, new GeoFire.CompletionListener() {
+                        @Override
+                        public void onComplete(String key, DatabaseError error) {
+                            System.out.println("gvgvgvl removed");
+
+                            Intent intent= new Intent(CustomerMapsActivity.this, NavigationMapsActivity.class);
+                            startActivity(intent);
+                            finish();
+                            return;
+                        }
+                    });
+
+
+
+                }
+            }
+
+            @Override
+            public void onKeyExited(String key) {
+
+            }
+
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {
+
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+                if(!spacefound){
+                    radius++;
+                    getClosestParkingSpace();
+                }
+            }
+
+            @Override
+            public void onGeoQueryError(DatabaseError error) {
+
+            }
+        });
     }
 
 
@@ -201,7 +300,7 @@ public class PsownerMapsActivity extends FragmentActivity implements OnMapReadyC
 
     }
 
-    @Override
+
     public void onLocationChanged(Location location) {
         mLastLocation = location;
         LatLng latlng = new LatLng(location.getLatitude(),location.getLongitude());
@@ -211,7 +310,7 @@ public class PsownerMapsActivity extends FragmentActivity implements OnMapReadyC
 
 
 
-    @Override
+
     public void onConnected(@Nullable Bundle bundle) {
 /*        mLocationRequuest = new LocationRequest();
         mLocationRequuest.setInterval(1000);
@@ -232,12 +331,12 @@ public class PsownerMapsActivity extends FragmentActivity implements OnMapReadyC
 */
     }
 
-    @Override
+
     public void onConnectionSuspended(int i) {
 
     }
 
-    @Override
+
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
