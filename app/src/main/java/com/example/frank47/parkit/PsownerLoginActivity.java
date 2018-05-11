@@ -57,19 +57,23 @@ public class PsownerLoginActivity extends AppCompatActivity {
                 final String email = mEmail.getText().toString().trim();
                 final String password= mPassword.getText().toString().trim();
 
-                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(PsownerLoginActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!(task.isSuccessful())){
-                            Toast.makeText(PsownerLoginActivity.this, "registration error", Toast.LENGTH_SHORT).show();
-                        }else{
-                            String user_Id= mAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db= FirebaseDatabase.getInstance().getReference().child("Users").child("Parking_space_owner").child(user_Id);
-                            current_user_db.setValue(true);
+                if(email!=null && password!=null){
+                    mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(PsownerLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(!(task.isSuccessful())){
+                                Toast.makeText(PsownerLoginActivity.this, "registration error", Toast.LENGTH_SHORT).show();
+                            }else{
+                                String user_Id= mAuth.getCurrentUser().getUid();
+                                DatabaseReference current_user_db= FirebaseDatabase.getInstance().getReference().child("Users").child("Parking_space_owner").child(user_Id);
+                                current_user_db.setValue(true);
 
+                            }
                         }
-                    }
-                });
+                    });
+                }else{
+                    Toast.makeText(PsownerLoginActivity.this, "Please provide necessary details!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -79,14 +83,18 @@ public class PsownerLoginActivity extends AppCompatActivity {
                 final String email = mEmail.getText().toString().trim();
                 final String password= mPassword.getText().toString().trim();
 
-                mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(PsownerLoginActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!(task.isSuccessful())){
-                            Toast.makeText(PsownerLoginActivity.this, "sign in error", Toast.LENGTH_SHORT).show();
+                if(email!=null && password!=null){
+                    mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(PsownerLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(!(task.isSuccessful())){
+                                Toast.makeText(PsownerLoginActivity.this, "sign in error", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+                }else{
+                    Toast.makeText(PsownerLoginActivity.this, "Please provide necessary details!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

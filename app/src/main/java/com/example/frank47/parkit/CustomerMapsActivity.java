@@ -120,8 +120,11 @@ public class CustomerMapsActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onClick(View v) {
 
-                getClosestParkingSpace();
-
+                if(destinationLatLng!=null){
+                    getClosestParkingSpace();
+                }else{
+                    Toast.makeText(CustomerMapsActivity.this, "Please enter your area before renting", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });

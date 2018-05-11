@@ -112,12 +112,16 @@ public class PsownerMapsActivity extends FragmentActivity implements OnMapReadyC
                 Map<String,location> mhashmap = new HashMap<>();
                 mfirebaseDatabase.child(userid).setValue(new location(lat,lng));
                 */
-                geoFire.setLocation(userid, new GeoLocation(destinationLatLng.latitude, destinationLatLng.longitude), new GeoFire.CompletionListener() {
-                    @Override
-                    public void onComplete(String key, DatabaseError error) {
-                        Toast.makeText(PsownerMapsActivity.this, "Your location has been saved", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if(destinationLatLng!=null){
+                    geoFire.setLocation(userid, new GeoLocation(destinationLatLng.latitude, destinationLatLng.longitude), new GeoFire.CompletionListener() {
+                        @Override
+                        public void onComplete(String key, DatabaseError error) {
+                            Toast.makeText(PsownerMapsActivity.this, "Your location has been saved", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }else{
+                    Toast.makeText(PsownerMapsActivity.this, "Please enter your area before leasing", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
