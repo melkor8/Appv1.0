@@ -56,7 +56,7 @@ public class CustomerLoginActivity extends AppCompatActivity {
                 final String email = mEmail.getText().toString().trim();
                 final String password= mPassword.getText().toString().trim();
 
-                if(email!=null && password!=null){
+                if(!email.matches("") && !password.matches("")){
                     mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(CustomerLoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -82,7 +82,7 @@ public class CustomerLoginActivity extends AppCompatActivity {
                 final String email = mEmail.getText().toString().trim();
                 final String password= mPassword.getText().toString().trim();
 
-                if(email!=null && password!=null){
+                if(!email.matches("") && !password.matches("")){
                     mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(CustomerLoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
