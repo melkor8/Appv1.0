@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="356dp"
+        android:layout_width="343dp"
         android:layout_height="60dp"
         android:layout_marginBottom="350dp"
         android:layout_marginEnd="12dp"
@@ -43,33 +43,37 @@
         android:text="@string/please_pay_an_amount_of"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.567" />
 
 
     <TextView
         android:id="@+id/duration_textview"
-        android:layout_width="127dp"
-        android:layout_height="51dp"
+        android:layout_width="113dp"
+        android:layout_height="43dp"
         android:layout_marginBottom="242dp"
         android:layout_marginTop="15dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
         app:layout_constraintBottom_toTopOf="@+id/end_parking_button"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/amount_textview"
-        android:layout_width="127dp"
-        android:layout_height="51dp"
+        android:layout_width="92dp"
+        android:layout_height="47dp"
         android:layout_marginBottom="81dp"
         android:layout_marginTop="17dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
         app:layout_constraintBottom_toTopOf="@+id/end_parking_button"
-        app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/payment_textView" />
+        app:layout_constraintTop_toBottomOf="@+id/payment_textView"
+        app:layout_constraintVertical_bias="0.653" />
 </android.support.constraint.ConstraintLayout>

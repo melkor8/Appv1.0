@@ -21,7 +21,10 @@ public class CustomerLoginActivity extends AppCompatActivity {
     private EditText mEmail,mPassword;
     private Button mLogin,mRegistration;
 
+    //initializes a firebase authorization variable
     private FirebaseAuth mAuth;
+
+    //initializes a firebase authorizationstatechangelistener variable
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,8 @@ public class CustomerLoginActivity extends AppCompatActivity {
         mLogin=(Button)findViewById(R.id.login_button);
         mRegistration=(Button)findViewById(R.id.registration_button);
 
+
+        //registration button onclicklistener
         mRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +81,7 @@ public class CustomerLoginActivity extends AppCompatActivity {
             }
         });
 
+        //login button onclicklistener
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
